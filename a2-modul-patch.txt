@@ -1,0 +1,393 @@
+SPRACHLABOR — A2 WORTLISTE + SM-2 YAMASI
+========================================
+index.html'de sırayla:
+
+1) </style> ÖNCESİNE            -> [CSS]
+2) </main> ÖNCESİNE             -> [HTML]
+3) </nav> ÖNCESİNE              -> [NAV]
+4) "/* ---------- SRS (SM-2 lite) ---------- */" SATIRININ ÖNCESİNE -> [BRIDGE]
+5) Üç küçük değişiklik (aşağıda [EDITS])
+6) </body> ÖNCESİNE             -> önce a2-wortschatz.js bir <script> içinde,
+                                    sonra [JS] ayrı bir <script> içinde
+
+
+========================= [EDITS] =======================
+renderReview() içinde:
+  ESKİ: const v=CURRICULUM[c.d].vocab[c.i];
+  YENİ: const v=a2ResolveCard(c);
+
+renderReview() ve flip() içinde (2 yerde):
+  ESKİ: Kalan: ${session.length} · Gün ${c.d} kelimesi
+  YENİ: Kalan: ${session.length} · ${a2CardLabel(c)}
+
+flip() içinde:
+  ESKİ:       <div class="tr">${v.tr}</div>
+  YENİ:       <div class="tr">${v.tr}</div>
+              ${v.forms?`<div class="extr" style="margin-top:2px">${v.forms}</div>`:''}
+
+
+========================= [CSS] =========================
+
+/* ===== A2 WORTLISTE ===== */
+nav button{padding-left:2px;padding-right:2px}
+@media(max-width:400px){nav button{font-size:10px}nav button .ic{font-size:17px}}
+
+.a2-counts{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 4px}
+.a2-count{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.a2-count b{font-weight:700}
+.a2-count.deck{border-color:var(--amber);color:var(--amber)}
+
+.a2-modes{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:4px;margin:12px 0}
+.a2-modes button{flex:1;padding:8px 4px;border-radius:8px;font-family:var(--display);font-size:13px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer}
+.a2-modes button.on{background:var(--surface2);color:var(--ink)}
+
+.a2-bar{position:sticky;top:0;z-index:8;background:var(--base);padding:8px 0;border-bottom:1px solid var(--line)}
+.a2-srow{display:flex;gap:8px}
+.a2-search{flex:1;display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 12px;height:40px}
+.a2-search input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-family:var(--display);font-size:14px}
+.a2-search input::placeholder{color:var(--muted)}
+.a2-ico{width:40px;height:40px;border-radius:10px;background:var(--surface);border:1px solid var(--line);color:var(--muted);font-size:15px;cursor:pointer}
+.a2-ico.on{background:var(--amber);border-color:var(--amber);color:#1a0f0c}
+.a2-chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+.a2-chips::-webkit-scrollbar{display:none}
+.a2-chip{flex:none;font-family:var(--display);font-size:12.5px;padding:6px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted);white-space:nowrap;cursor:pointer}
+.a2-chip .n{font-family:var(--mono);font-size:10px;opacity:.6;margin-left:5px}
+
+/* deste şeridi */
+.a2-deck{display:flex;align-items:center;gap:7px;padding:9px 0 2px;flex-wrap:wrap}
+.a2-deck .lbl{font-family:var(--mono);font-size:11px;color:var(--muted);margin-right:auto}
+.a2-deck select{font-family:var(--mono);font-size:11.5px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 7px}
+.a2-deck button{font-family:var(--display);font-size:12.5px;font-weight:500;border-radius:8px;padding:7px 11px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.a2-deck button.add{background:var(--amber);border-color:var(--amber);color:#1a0f0c;font-weight:600}
+
+.a2-letter{font-family:var(--serif);font-size:24px;color:var(--muted);padding:18px 0 4px;border-bottom:1px solid var(--line)}
+.a2-row{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.a2-spine{flex:none;width:3px;border-radius:2px;background:var(--muted)}
+.a2-main{flex:1;min-width:0}
+.a2-w{font-size:16px;font-weight:500}
+.a2-meta{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+.a2-tr{font-size:13.5px;color:var(--muted);margin-top:3px}
+.a2-ex{display:none;margin-top:8px;padding:9px 11px;background:var(--surface);border-radius:9px;border-left:2px solid var(--line)}
+.a2-row.open .a2-ex{display:block}
+.a2-ex .de{font-family:var(--serif);font-size:15px}
+.a2-ex .tk{font-size:13px;color:var(--muted);margin-top:4px}
+.a2-tick{flex:none;align-self:center;width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--muted);font-size:14px;line-height:1;cursor:pointer}
+.a2-tick.in{background:var(--amber);border-color:var(--amber);color:#1a0f0c}
+.a2-tick.rep{background:var(--mint);border-color:var(--mint);color:#0e1a18}
+.a2-empty{text-align:center;color:var(--muted);padding:50px 16px;font-size:14px}
+
+.a2-prog{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin:16px 0 10px}
+.a2-prog i{display:block;height:100%;background:var(--amber);width:0;transition:width .25s}
+.a2-pos{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:10px}
+.a2-scene{perspective:1400px}
+.a2-card{position:relative;width:100%;min-height:310px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.3,.8,.3,1);cursor:pointer}
+.a2-card.flip{transform:rotateY(180deg)}
+.a2-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--muted)}
+.a2-face.bk{transform:rotateY(180deg);background:var(--surface2);border-left-color:var(--amber)}
+.a2-kick{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:auto}
+.a2-hw{font-family:var(--serif);font-size:clamp(32px,8.5vw,46px);line-height:1.08;margin:12px 0 6px}
+.a2-hw .art{display:block;font-size:.42em;margin-bottom:2px}
+.a2-forms{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.a2-big{font-size:22px;font-weight:600;margin:10px 0 16px}
+.a2-sent{font-family:var(--serif);font-size:16px;line-height:1.5}
+.a2-senttr{font-size:13.5px;color:var(--muted);margin-top:6px}
+.a2-hint{margin-top:auto;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.a2-ctl{display:flex;gap:8px;margin-top:16px}
+.a2-ctl button{flex:1;height:46px;border-radius:11px;background:var(--surface);border:1px solid var(--line);color:var(--muted);font-family:var(--display);font-size:14px;font-weight:500;cursor:pointer}
+.a2-ctl button.pri{background:var(--amber);border-color:var(--amber);color:#1a0f0c;font-weight:600}
+.a2-ctl2{display:flex;gap:8px;margin-top:8px}
+.a2-ctl2 button{flex:1;height:38px;border-radius:10px;background:none;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:12px;cursor:pointer}
+.a2-ref{margin:20px 0}
+.a2-ref h2{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 10px}
+.a2-tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.a2-tbl td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted)}
+.a2-tbl td:first-child{color:var(--amber);font-family:var(--mono);white-space:nowrap}
+
+
+========================= [HTML] ========================
+
+    <!-- A2 WORTLISTE -->
+    <section class="view" id="v-a2">
+      <div class="eyebrow">GOETHE-ZERTIFIKAT A2</div>
+      <h1>Wortliste</h1>
+      <div class="a2-counts" id="a2Counts"></div>
+      <div class="a2-modes" id="a2Modes">
+        <button class="on" data-m="liste">Liste</button>
+        <button data-m="kart">Önizleme</button>
+        <button data-m="ref">Referans</button>
+      </div>
+      <div class="a2-bar" id="a2Bar">
+        <div class="a2-srow">
+          <label class="a2-search"><input id="a2Q" type="search" placeholder="Kelime veya anlam ara…" autocomplete="off"></label>
+          <button class="a2-ico" id="a2New" title="Sadece destede olmayanlar">☆</button>
+        </div>
+        <div class="a2-chips" id="a2Cats"></div>
+        <div class="a2-chips" id="a2Subs"></div>
+        <div class="a2-deck" id="a2Deck">
+          <span class="lbl" id="a2DeckLbl"></span>
+          <select id="a2Per" title="Günde kaç yeni kelime">
+            <option value="10">10/gün</option>
+            <option value="20" selected>20/gün</option>
+            <option value="30">30/gün</option>
+            <option value="50">50/gün</option>
+          </select>
+          <button class="add" id="a2Add">Tekrara ekle</button>
+          <button id="a2Del">Çıkar</button>
+        </div>
+      </div>
+      <div id="a2List"></div>
+      <div id="a2Cards" hidden>
+        <div class="a2-prog"><i id="a2Bar2"></i></div>
+        <div class="a2-pos"><span id="a2Pos"></span><span id="a2Dir"></span></div>
+        <div class="a2-scene"><div class="a2-card" id="a2Card">
+          <div class="a2-face fr" id="a2Fr"></div><div class="a2-face bk" id="a2Bk"></div>
+        </div></div>
+        <div class="a2-ctl">
+          <button id="a2Prev">‹ Önceki</button>
+          <button id="a2Flip" class="pri">Çevir</button>
+          <button id="a2Next">Sonraki ›</button>
+        </div>
+        <div class="a2-ctl2">
+          <button id="a2Shuf">Karıştır</button>
+          <button id="a2Swap">DE → TR</button>
+          <button id="a2One">Bunu tekrara ekle</button>
+        </div>
+      </div>
+      <div id="a2Refs" hidden></div>
+    </section>
+
+
+========================= [NAV] =========================
+  <button data-v="a2"><span class="ic">⌸</span>A2</button>
+
+
+======================== [BRIDGE] =======================
+
+/* ---------- A2 ↔ SM-2 köprüsü ---------- */
+function a2ResolveCard(c){
+  if(c && c.src==='a2'){
+    const w=(typeof A2_WOERTER!=='undefined'&&A2_WOERTER[c.ai])||{};
+    const K=(typeof A2_META!=='undefined'&&A2_META.kategorien[w.k])?A2_META.kategorien[w.k].name:'';
+    let forms='';
+    if(w.k==='n')      forms=w.pl?('Plural: '+w.pl):'';
+    else if(w.k==='v') forms=w.vf||'';
+    else               forms=K+(w.g?(' · '+w.g):'');
+    return { art:(w.k==='n'?(w.ar||''):K), de:w.w||'', tr:w.tr||'', ex:w.s||'', extr:w.st||'', forms:forms };
+  }
+  return CURRICULUM[c.d].vocab[c.i];
+}
+function a2CardLabel(c){ return (c&&c.src==='a2') ? 'A2 Wortliste' : ('Gün '+c.d+' kelimesi'); }
+
+
+========================= [JS] ==========================
+
+/* ================= A2 WORTLISTE — SM-2 entegre ================= */
+(function(){
+  A2_WOERTER.forEach(function(w,i){ w._i=i; });
+  var KAT=A2_META.kategorien, ART=A2_META.artikel;
+  var A={m:"liste",cat:"alle",sub:"alle",q:"",neu:false,deck:[],i:0,fl:false,dir:"de",per:20};
+  var $=function(s){return document.getElementById(s)};
+  function col(w){
+    if(w.k==="n"&&w.ar){ if(ART[w.ar])return ART[w.ar]; if(w.ar.indexOf("/")>-1)return "#8a9a96"; }
+    return KAT[w.k]?KAT[w.k].farbe:"#8a9a96";
+  }
+  function kn(k){return KAT[k]?KAT[k].name:k}
+  function inDeck(w){ return !!S.cards["a2-"+w._i]; }
+  function deckCount(){ var n=0; for(var k in S.cards){ if(S.cards[k].src==="a2")n++; } return n; }
+  function dstr(o){ var dt=new Date(); dt.setDate(dt.getDate()+o); return dt.toISOString().slice(0,10); }
+
+  /* ---- deste yönetimi ---- */
+  function addMany(list){
+    var per=A.per, maxOff=-1;
+    for(var k in S.cards){ var c=S.cards[k];
+      if(c.src==="a2"&&c.reps===0){ var o=daysBetween(today(),c.due); if(o>maxOff)maxOff=o; } }
+    var off=Math.max(0,maxOff), day=dstr(off), cnt=0;
+    for(var k2 in S.cards){ if(S.cards[k2].src==="a2"&&S.cards[k2].due===day&&S.cards[k2].reps===0)cnt++; }
+    var added=0;
+    list.forEach(function(w){
+      var id="a2-"+w._i; if(S.cards[id])return;
+      if(cnt>=per){ off++; day=dstr(off); cnt=0; }
+      S.cards[id]={ef:2.5,iv:0,reps:0,due:day,src:"a2",ai:w._i};
+      cnt++; added++;
+    });
+    save(); return added;
+  }
+  function delMany(list){
+    var n=0; list.forEach(function(w){ var id="a2-"+w._i; if(S.cards[id]){ delete S.cards[id]; n++; } });
+    save(); return n;
+  }
+
+  /* ---- sayaçlar ---- */
+  function counts(){
+    var c={der:0,die:0,das:0};
+    A2_WOERTER.forEach(function(w){if(w.k==="n"&&c[w.ar]!==undefined)c[w.ar]++});
+    $("a2Counts").innerHTML=
+      '<span class="a2-count"><b>'+A2_WOERTER.length+'</b> kelime</span>'+
+      '<span class="a2-count" style="color:'+ART.der+'">der <b>'+c.der+'</b></span>'+
+      '<span class="a2-count" style="color:'+ART.die+'">die <b>'+c.die+'</b></span>'+
+      '<span class="a2-count" style="color:'+ART.das+'">das <b>'+c.das+'</b></span>'+
+      '<span class="a2-count deck">destede <b>'+deckCount()+'</b></span>';
+    var f=filt(), inn=0; f.forEach(function(w){ if(inDeck(w))inn++; });
+    $("a2DeckLbl").textContent="Filtrede "+f.length+" kelime · "+inn+" tanesi destede";
+  }
+
+  /* ---- filtre çipleri ---- */
+  function cats(){
+    var c={};A2_WOERTER.forEach(function(w){c[w.k]=(c[w.k]||0)+1});
+    var h='<button class="a2-chip" data-cat="alle" data-c="#e8a33d">Tümü<span class="n">'+A2_WOERTER.length+'</span></button>';
+    Object.keys(KAT).forEach(function(k){ if(!c[k])return;
+      h+='<button class="a2-chip" data-cat="'+k+'" data-c="'+KAT[k].farbe+'">'+KAT[k].name+'<span class="n">'+c[k]+'</span></button>';});
+    $("a2Cats").innerHTML=h; paint(); subs();
+  }
+  function paint(){
+    [].forEach.call($("a2Cats").children,function(b){
+      var on=b.dataset.cat===A.cat;
+      b.style.background=on?b.dataset.c:""; b.style.color=on?"#16201f":"";
+      b.style.borderColor=on?"transparent":""; b.style.fontWeight=on?"600":"";
+    });
+  }
+  function subs(){
+    var o;
+    if(A.cat==="n") o=[["alle","Hepsi"],["der","der"],["die","die"],["das","das"]];
+    else{ var g=[],seen={}; A2_WOERTER.forEach(function(w){if(w.g&&!seen[w.g]){seen[w.g]=1;g.push([w.g,w.g])}});
+          o=[["alle","Tüm konular"]].concat(g); }
+    $("a2Subs").innerHTML=o.map(function(x){
+      var on=A.sub===x[0], c=(A.cat==="n"&&ART[x[0]])?ART[x[0]]:"#e8a33d";
+      return '<button class="a2-chip" data-sub="'+x[0]+'"'+(on?' style="background:'+c+';color:#16201f;border-color:transparent;font-weight:600"':'')+'>'+x[1]+'</button>';
+    }).join("");
+  }
+  function filt(){
+    var q=A.q.trim().toLowerCase();
+    return A2_WOERTER.filter(function(w){
+      if(A.cat!=="alle"&&w.k!==A.cat)return false;
+      if(A.sub!=="alle"){ if(A.cat==="n"){if(w.ar!==A.sub)return false} else {if(w.g!==A.sub)return false} }
+      if(A.neu&&inDeck(w))return false;
+      if(q&&((w.w+" "+(w.tr||"")+" "+(w.s||"")+" "+(w.st||"")).toLowerCase().indexOf(q)<0))return false;
+      return true;
+    });
+  }
+
+  /* ---- liste ---- */
+  function list(){
+    var d=filt();
+    if(!d.length){$("a2List").innerHTML='<p class="a2-empty">Bu filtreyle kelime yok.</p>';return}
+    var h="",cur="";
+    d.forEach(function(w){
+      var L=w.w.replace(/^(der |die |das |sich )/,"").charAt(0).toUpperCase();
+      if(L!==cur){cur=L;h+='<div class="a2-letter">'+cur+'</div>'}
+      var c=col(w),meta;
+      if(w.k==="n")meta=[w.ar?'<span style="color:'+c+'">'+w.ar+'</span>':"",w.pl?"Pl. "+w.pl:""].filter(Boolean).join(" · ");
+      else if(w.k==="v")meta=w.vf||kn(w.k);
+      else meta=kn(w.k)+(w.g?" · "+w.g:"");
+      var card=S.cards["a2-"+w._i];
+      var cls=card?(card.reps>0?" rep":" in"):"", sym=card?(card.reps>0?"✓":"★"):"+";
+      h+='<article class="a2-row"><span class="a2-spine" style="background:'+c+'"></span><div class="a2-main">'+
+        '<div class="a2-w">'+(w.k==="n"&&w.ar?'<span style="color:'+c+'">'+w.ar+' </span>':"")+w.w+'</div>'+
+        '<div class="a2-meta">'+meta+'</div><div class="a2-tr">'+(w.tr||"")+'</div>'+
+        (w.s?'<div class="a2-ex"><div class="de">'+w.s+'</div><div class="tk">'+(w.st||"")+'</div></div>':"")+
+        '</div><button class="a2-tick'+cls+'" data-i="'+w._i+'">'+sym+'</button></article>';
+    });
+    $("a2List").innerHTML=h;
+  }
+
+  /* ---- önizleme kartı ---- */
+  function deck(){A.deck=filt().slice();A.i=0;A.fl=false;card()}
+  function card(){
+    var w=A.deck[A.i];
+    $("a2Card").classList.toggle("flip",A.fl);
+    $("a2Dir").textContent=A.dir==="de"?"Almanca → Türkçe":"Türkçe → Almanca";
+    $("a2Swap").textContent=A.dir==="de"?"DE → TR":"TR → DE";
+    if(!w){$("a2Fr").innerHTML='<div class="a2-kick">Deste boş</div><div class="a2-hw" style="font-size:26px">Filtreye uyan kelime yok</div>';$("a2Bk").innerHTML="";$("a2Pos").textContent="";$("a2Bar2").style.width="0";return}
+    var c=col(w);
+    $("a2Pos").textContent=(A.i+1)+" / "+A.deck.length+(inDeck(w)?" · destede":"");
+    $("a2Bar2").style.width=((A.i+1)/A.deck.length*100)+"%";
+    var f;
+    if(w.k==="n")f=[w.pl?"Plural: "+w.pl:"",w.g||""].filter(Boolean).join(" · ");
+    else if(w.k==="v")f=w.vf||"";
+    else f=kn(w.k)+(w.g?" · "+w.g:"");
+    var FR=$("a2Fr"),BK=$("a2Bk"); FR.style.borderLeftColor=c;
+    if(A.dir==="de"){
+      FR.innerHTML='<div class="a2-kick">'+kn(w.k)+'</div><div class="a2-hw">'+
+        (w.k==="n"&&w.ar?'<span class="art" style="color:'+c+'">'+w.ar+'</span>':"")+w.w+
+        '</div><div class="a2-forms">'+f+'</div><div class="a2-hint">anlamı için karta dokun</div>';
+      BK.innerHTML='<div class="a2-kick">'+w.w+'</div><div class="a2-big">'+(w.tr||"")+'</div>'+
+        (w.s?'<div class="a2-sent">'+w.s+'</div><div class="a2-senttr">'+(w.st||"")+'</div>':"");
+    }else{
+      FR.innerHTML='<div class="a2-kick">Türkçe</div><div class="a2-hw" style="font-family:var(--display);font-size:clamp(24px,6.5vw,34px);font-weight:600">'+
+        (w.tr||"")+'</div><div class="a2-forms">'+kn(w.k)+'</div><div class="a2-hint">Almancası için karta dokun</div>';
+      BK.innerHTML='<div class="a2-kick">'+kn(w.k)+'</div><div class="a2-big" style="font-family:var(--serif);font-size:34px;font-weight:400">'+
+        (w.k==="n"&&w.ar?'<span style="color:'+c+'">'+w.ar+' </span>':"")+w.w+'</div>'+
+        '<div class="a2-senttr" style="margin:0 0 10px">'+f+'</div>'+
+        (w.s?'<div class="a2-sent">'+w.s+'</div><div class="a2-senttr">'+(w.st||"")+'</div>':"");
+    }
+  }
+  function step(d){if(!A.deck.length)return;A.i=(A.i+d+A.deck.length)%A.deck.length;A.fl=false;card()}
+
+  function refs(){
+    var h="";
+    Object.keys(A2_REFERENZ).forEach(function(k){var t=A2_REFERENZ[k];
+      h+='<div class="a2-ref"><h2>'+t.titel+'</h2><table class="a2-tbl"><tbody>';
+      t.zeilen.forEach(function(r){h+="<tr>"+r.map(function(c){return"<td>"+c+"</td>"}).join("")+"</tr>"});
+      h+='</tbody></table></div>';});
+    $("a2Refs").innerHTML=h;
+  }
+  function mode(m){
+    A.m=m;
+    [].forEach.call($("a2Modes").children,function(b){b.classList.toggle("on",b.dataset.m===m)});
+    $("a2List").hidden=m!=="liste"; $("a2Cards").hidden=m!=="kart"; $("a2Refs").hidden=m!=="ref";
+    $("a2Bar").style.display=m==="ref"?"none":"";
+    $("a2Deck").style.display=m==="liste"?"":"none";
+    if(m==="kart")deck(); if(m==="ref")refs(); if(m==="liste")list();
+  }
+  function refresh(){ counts(); if(A.m==="liste")list(); else if(A.m==="kart")deck(); }
+
+  /* ---- olaylar ---- */
+  $("a2Modes").onclick=function(e){var b=e.target.closest("button[data-m]");if(b){playSound('tap');mode(b.dataset.m)}};
+  $("a2Cats").onclick=function(e){var b=e.target.closest(".a2-chip");if(!b)return;A.cat=b.dataset.cat;A.sub="alle";paint();subs();refresh()};
+  $("a2Subs").onclick=function(e){var b=e.target.closest(".a2-chip");if(!b)return;A.sub=b.dataset.sub;subs();refresh()};
+  $("a2Q").oninput=function(e){A.q=e.target.value;refresh()};
+  $("a2New").onclick=function(e){A.neu=!A.neu;e.currentTarget.classList.toggle("on",A.neu);e.currentTarget.textContent=A.neu?"★":"☆";refresh()};
+  $("a2Per").onchange=function(e){A.per=parseInt(e.target.value,10)||20};
+  $("a2Add").onclick=function(){
+    var f=filt().filter(function(w){return !inDeck(w)});
+    if(!f.length){toast("Filtredeki kelimeler zaten destede");return}
+    var n=addMany(f);
+    playSound('complete'); toast(n+" kelime tekrara eklendi · günde "+A.per);
+    refresh(); updateBadge();
+  };
+  $("a2Del").onclick=function(){
+    var f=filt().filter(inDeck);
+    if(!f.length){toast("Filtrede desteye ait kelime yok");return}
+    if(!confirm(f.length+" kelime tekrar destesinden çıkarılsın mı? İlerlemeleri silinir."))return;
+    var n=delMany(f); toast(n+" kelime çıkarıldı"); refresh(); updateBadge();
+  };
+  $("a2List").onclick=function(e){
+    var t=e.target.closest(".a2-tick");
+    if(t){
+      e.stopPropagation();
+      var w=A2_WOERTER[parseInt(t.dataset.i,10)];
+      if(inDeck(w)){ delMany([w]); } else { addMany([w]); playSound('tap'); }
+      refresh(); updateBadge(); return;
+    }
+    var r=e.target.closest(".a2-row"); if(r)r.classList.toggle("open");
+  };
+  $("a2Card").onclick=function(){A.fl=!A.fl;$("a2Card").classList.toggle("flip",A.fl);playSound('flip')};
+  $("a2Flip").onclick=function(){A.fl=!A.fl;$("a2Card").classList.toggle("flip",A.fl);playSound('flip')};
+  $("a2Next").onclick=function(){step(1)}; $("a2Prev").onclick=function(){step(-1)};
+  $("a2Shuf").onclick=function(){for(var i=A.deck.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=A.deck[i];A.deck[i]=A.deck[j];A.deck[j]=t}A.i=0;A.fl=false;card()};
+  $("a2Swap").onclick=function(){A.dir=A.dir==="de"?"tr":"de";A.fl=false;card()};
+  $("a2One").onclick=function(){
+    var w=A.deck[A.i]; if(!w)return;
+    if(inDeck(w)){ delMany([w]); toast("Desteden çıkarıldı"); }
+    else { addMany([w]); playSound('tap'); toast("Tekrara eklendi"); }
+    card(); counts(); updateBadge();
+  };
+
+  window.a2Render=function(){ if(!$("a2Cats").children.length)cats(); refresh(); };
+  counts(); cats(); list(); mode("liste");
+
+  var _sw=switchView;
+  switchView=function(v){_sw(v); if(v==="a2")window.a2Render()};
+  document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){switchView(b.dataset.v)}});
+})();
+
